@@ -1,0 +1,49 @@
+:root {
+  --color-primary-dark: #244A85;
+  --color-primary: #2067A0;
+  --color-primary-light: #0894D0;
+
+  --color-accent: #EA681B;
+  --color-accent-dark: #C7550F;
+
+  --color-ink: #0D0D0D;
+
+  --color-white: #FFFFFF;
+  --color-gray-50: #F7F8FA;
+  --color-gray-100: #EEF0F3;
+  --color-gray-200: #E1E4E9;
+  --color-gray-400: #9AA1AC;
+  --color-gray-600: #5B626D;
+
+  --color-bg: var(--color-white);
+  --color-bg-alt: var(--color-gray-50);
+  --color-text: var(--color-ink);
+  --color-text-muted: var(--color-gray-600);
+  --color-border: var(--color-gray-200);
+
+  --font-heading: 'Sora', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --fs-xs: 0.875rem;
+  --fs-sm: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.5rem;
+  --fs-xl: 2rem;
+  --fs-2xl: 2.75rem;
+  --fs-3xl: 3.5rem;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --container-max: 1200px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+
+  --shadow-sm: 0 1px 3px rgba(13, 13, 13, 0.06);
+  --shadow-md: 0 8px 24px rgba(13, 13, 13, 0.08);
+}

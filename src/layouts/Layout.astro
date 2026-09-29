@@ -1,23 +1,38 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '../styles/global.css';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'ZIEETE — Toda tu operación, conectada',
+  description = 'ZIEETE es una plataforma para la gestión operacional integral de empresas de transporte: operación, flota, mantenimiento, HSEQ, talento humano, E-learning, proveedores e indicadores.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- TODO: CONFIRMAR URL DE ZIEETE (canonical, og:url y sitemap; requiere definir `site` en astro.config.mjs) -->
+    <!-- TODO: CONFIRMAR FAVICON / LOGO OFICIAL -->
+    <!-- TODO: CONFIRMAR HERRAMIENTA DE ANALÍTICA -->
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
