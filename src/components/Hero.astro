@@ -451,7 +451,6 @@
     object-fit: cover;
 }
 
-/* ---------- Fila 2: diagrama + información ---------- */
 .hero-network-row {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
@@ -507,7 +506,6 @@
     to { stroke-dashoffset: -18; }
 }
 
-/* Hub */
 .network-hub {
     cursor: pointer;
     outline: none;
@@ -567,7 +565,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Nodos */
 .network-node { cursor: pointer; outline: none; }
 
 .node-icon *,
@@ -626,7 +623,6 @@
     fill: none;
 }
 
-/* ---------- Panel de información (derecha del diagrama) ---------- */
 .network-info {
     min-height: 27rem;
     padding-left: 2rem;
@@ -661,7 +657,6 @@
 .detail-icon svg { width: 20px !important; height: 20px !important; }
 .item-icon svg { width: 15px !important; height: 15px !important; }
 
-/* Los iconos toman el color del contenedor (currentColor) y nunca se rellenan */
 .detail-icon svg *,
 .item-icon svg * {
     fill: none !important;
@@ -800,17 +795,24 @@
 
 .detail-nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem 1.2rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: clamp(0.4rem, 1vw, 0.9rem);
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
+.detail-nav::-webkit-scrollbar { display: none; }
+
 .detail-nav button {
-    padding: 0.35rem 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0.3rem 0;
     border: 0;
     border-bottom: 2px solid transparent;
     background: none;
     font: inherit;
-    font-size: 0.85rem;
+    font-size: clamp(0.68rem, 0.85vw, 0.78rem);
     font-weight: 600;
     color: var(--zt-muted, #5b6b84);
     cursor: pointer;
@@ -839,7 +841,6 @@
     border: 0;
 }
 
-/* Con "reducir movimiento" se mantiene el texto escrito y un fundido suave, sin giros ni desplazamientos */
 @media (prefers-reduced-motion: reduce) {
     .detail-items li,
     .item-icon,
@@ -848,7 +849,6 @@
     }
 }
 
-/* ---------- Acordeón móvil (lista plana, sin tarjetas) ---------- */
 .mobile-modules-accordion {
     display: none !important;
     flex-direction: column;
@@ -925,7 +925,6 @@ details[open] .accordion-body {
     padding: 0 1rem 1.1rem 1rem;
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 960px) {
     .hero-network-row {
         grid-template-columns: minmax(0, 1fr);
@@ -941,9 +940,17 @@ details[open] .accordion-body {
         padding-left: 0;
         border-left: 0;
     }
+
+    .detail-nav {
+        justify-content: flex-start;
+        gap: 0.35rem 1.4rem;
+    }
+
+    .detail-nav button {
+        font-size: 0.85rem;
+    }
 }
 
-/* Teléfono: solo texto + tarjetas. Sin dashboard ni diagrama */
 @media (max-width: 768px) {
     .hero .hero-inner {
         grid-template-columns: minmax(0, 1fr);
