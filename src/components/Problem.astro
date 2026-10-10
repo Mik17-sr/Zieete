@@ -1,0 +1,584 @@
+---
+// Problema — la operación dispersa se ordena alrededor de ZIEETE al hacer scroll.
+// El orden de este arreglo coincide con las posiciones definidas en el script de abajo.
+const problems = [
+  {
+    title: 'Excel',
+    desc: 'Hojas de cálculo distintas por área, sin cruce de información.',
+    icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>',
+  },
+  {
+    title: 'WhatsApp',
+    desc: 'Novedades, autorizaciones y evidencias dispersas en chats.',
+    icon: '<path d="M4 20l1.3-4.1A8 8 0 1 1 9 19.3z"/><path d="M9 12h.01M12.5 12h.01M16 12h.01"/>',
+  },
+  {
+    title: 'Documentos físicos',
+    desc: 'Papeles y carpetas difíciles de ubicar cuando se necesitan.',
+    icon: '<rect x="6" y="3" width="12" height="16" rx="1.5"/><rect x="3" y="6" width="12" height="16" rx="1.5"/><line x1="6" y1="11" x2="11" y2="11"/><line x1="6" y1="15" x2="11" y2="15"/>',
+  },
+  {
+    title: 'Aplicaciones independientes',
+    desc: 'Herramientas sueltas que no se comunican entre sí.',
+    icon: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="5" width="7" height="7" rx="1.5"/><rect x="4" y="15" width="7" height="7" rx="1.5"/><rect x="15" y="14" width="6" height="6" rx="1.5"/>',
+  },
+  {
+    title: 'Vencimientos sin control',
+    desc: 'Documentos y licencias que se vencen sin alerta previa.',
+    icon: '<circle cx="12" cy="13" r="8"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="13" x2="15" y2="15"/><line x1="9" y1="2" x2="15" y2="2"/>',
+  },
+  {
+    title: 'Evidencias difíciles de encontrar',
+    desc: 'Soportes de la operación repartidos en distintos lugares.',
+    icon: '<rect x="4" y="3" width="12" height="16" rx="1.5"/><line x1="7" y1="8" x2="13" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/><circle cx="16.5" cy="16.5" r="3.3"/><line x1="19" y1="19" x2="21.5" y2="21.5"/>',
+  },
+];
+---
+
+<section class="problem" id="problema">
+  <div class="container">
+    <div class="problem-header">
+      <h2>La operación dispersa es más difícil de controlar</h2>
+      <p>
+        Muchas empresas de transporte gestionan su día a día repartido entre Excel,
+        WhatsApp, documentos físicos y aplicaciones que no se comunican entre sí.
+        Cada proceso queda aislado, lo que dificulta el control, el seguimiento de
+        vencimientos y la obtención de evidencias confiables.
+      </p>
+    </div>
+
+    <!-- Escena controlada por el scroll -->
+    <div class="problem-track" id="problem-track">
+      <div class="problem-sticky" id="problem-sticky">
+        <div class="pz-stage" id="pz-stage">
+          <svg class="pz-threads" id="pz-threads" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+          <div class="pz-hub" aria-hidden="true">
+            <span class="pz-q">?</span>
+            <span class="pz-brand">
+              <img src="/images/icon.png" alt="" />
+              <b>ZIEETE</b>
+            </span>
+          </div>
+
+          {problems.map((item) => (
+            <div class="pz-card">
+              <div class="pz-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true" set:html={item.icon} />
+              </div>
+              <p class="pz-title">{item.title}</p>
+              <p class="pz-desc">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="pz-caption" aria-hidden="true">
+          <span class="c-a">Cada proceso, por su lado.</span>
+          <span class="c-b">Todo conectado en un solo lugar.</span>
+        </div>
+        <p class="pz-hint" aria-hidden="true">Sigue bajando </p>
+      </div>
+    </div>
+
+    <p class="problem-statement">
+      Cuando la información está dispersa, controlar la operación se vuelve más complejo.
+    </p>
+
+    <div class="problem-transition" aria-hidden="true">
+      <svg viewBox="0 0 24 40" width="24" height="40">
+        <line x1="12" y1="0" x2="12" y2="30" />
+        <polyline points="4,22 12,30 20,22" />
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem {
+    --pz-accent: var(--color-accent, #0066FF);
+    --pz-ink: var(--color-ink, #1d3f72);
+    --pz-muted: var(--color-text-muted, #5b6b84);
+    padding-block: var(--space-2xl);
+    background: var(--color-bg-alt);
+  }
+
+  .problem-header {
+    max-width: 60ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .problem-header p {
+    font-size: var(--fs-md);
+  }
+
+  /* ---------- Escena ---------- */
+  .problem-track {
+    height: 260vh;
+    position: relative;
+  }
+
+  .problem-sticky {
+    --e: 0;
+    --p: 0;
+    --ar: 1.6667;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .pz-stage {
+    position: relative;
+    width: min(100%, calc((100vh - 10rem) * var(--ar)));
+    aspect-ratio: var(--ar);
+    margin-inline: auto;
+    container-type: inline-size;
+  }
+
+  .pz-threads {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 1;
+  }
+
+  .pz-threads path {
+    fill: none;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Centro: "?" que se convierte en ZIEETE */
+  .pz-hub {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 20;
+    width: 17cqw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transform: translate(-50%, -50%) scale(calc(0.92 + var(--e) * 0.08));
+    background: color-mix(in srgb, #ffffff calc(var(--e) * 100%), var(--color-bg-alt, #f6f8fb));
+    border: 2px solid color-mix(in srgb, var(--pz-accent) calc(var(--e) * 100%), #dbe3f0);
+    box-shadow: 0 14px 36px -10px color-mix(in srgb, var(--pz-accent) calc(var(--e) * 55%), transparent);
+  }
+
+  .pz-q,
+  .pz-brand {
+    grid-area: 1 / 1;
+  }
+
+  .pz-q {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 12cqw;
+    line-height: 1;
+    color: #cfd8e6;
+    opacity: calc(1 - var(--e) * 1.8);
+  }
+
+  .pz-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5cqw;
+    opacity: calc(var(--e) * 2 - 1);
+  }
+
+  .pz-brand img {
+    width: 5.2cqw;
+    height: 5.2cqw;
+    object-fit: contain;
+  }
+
+  .pz-brand b {
+    font-family: var(--font-heading);
+    font-size: clamp(11px, 1.6cqw, 18px);
+    letter-spacing: 0.05em;
+    color: var(--pz-accent);
+  }
+
+  .problem-sticky.is-done .pz-hub::after {
+    content: "";
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 2px dashed var(--pz-accent);
+    opacity: 0.45;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .problem-sticky.is-done .pz-hub::after {
+      animation: pz-spin 16s linear infinite;
+    }
+  }
+
+  @keyframes pz-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Tarjetas: --ce (0 = caos, 1 = orden) lo escribe el script */
+  .pz-card {
+    --ce: 0;
+    position: absolute;
+    z-index: 2;
+    width: 19cqw;
+    padding: 1.2cqw 1.4cqw;
+    background: #ffffff;
+    border: 1px solid color-mix(in srgb, var(--pz-accent) calc(var(--ce) * 100%), var(--color-border, #dbe6f5));
+    border-radius: var(--radius-sm, 8px);
+    box-shadow: var(--shadow-sm, 0 4px 14px -6px rgba(0, 51, 102, 0.18));
+    will-change: transform, left, top;
+  }
+
+  .pz-icon {
+    width: clamp(18px, 2.4cqw, 28px);
+    aspect-ratio: 1;
+    color: color-mix(in srgb, var(--pz-accent) calc(var(--ce) * 100%), #8a97ab);
+  }
+
+  .pz-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pz-title {
+    margin: 0.5cqw 0 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(11px, 1.45cqw, 17px);
+    line-height: 1.25;
+    color: var(--pz-ink);
+  }
+
+  /* La descripción del problema se desvanece cuando la tarjeta se ordena */
+  .pz-desc {
+    margin: 0.4cqw 0 0;
+    font-size: clamp(10px, 1.1cqw, 13px);
+    line-height: 1.4;
+    color: var(--pz-muted);
+    max-height: calc((1 - var(--ce)) * 5em);
+    opacity: calc(1 - var(--ce) * 1.8);
+    overflow: hidden;
+  }
+
+  /* Pie de escena */
+  .pz-caption {
+    position: relative;
+    height: 2rem;
+    margin-top: 0.75rem;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--fs-md, 1.05rem);
+  }
+
+  .pz-caption span {
+    position: absolute;
+    inset: 0;
+  }
+
+  .c-a {
+    color: var(--pz-muted);
+    opacity: calc(1 - var(--e) * 2.2);
+  }
+
+  .c-b {
+    color: var(--pz-accent);
+    opacity: calc(var(--e) * 2.2 - 1.2);
+  }
+
+  .pz-hint {
+    margin: 0.2rem 0 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--pz-muted);
+    opacity: calc(1 - var(--p) * 12);
+  }
+
+  .pz-hint::after {
+    content: " ↓";
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pz-hint::after {
+      display: inline-block;
+      animation: pz-bob 1.2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pz-bob {
+    50% { transform: translateY(4px); }
+  }
+
+  /* Versión vertical para teléfono (el script cambia la composición) */
+  .problem-sticky[data-layout="mobile"] .pz-hub {
+    width: 22cqw;
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-q {
+    font-size: 20cqw;
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-brand img {
+    width: 8cqw;
+    height: 8cqw;
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-brand b {
+    font-size: clamp(9px, 3cqw, 13px);
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-card {
+    width: 36cqw;
+    padding: 2.2cqw 2.6cqw;
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-icon {
+    width: clamp(16px, 5.5cqw, 24px);
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-title {
+    margin-top: 1.2cqw;
+    font-size: clamp(10px, 3.4cqw, 14px);
+  }
+
+  .problem-sticky[data-layout="mobile"] .pz-desc {
+    display: none;
+  }
+
+  /* ---------- Cierre ---------- */
+  .problem-statement {
+    max-width: 42ch;
+    margin: var(--space-lg) auto 0;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .problem-transition {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-md);
+  }
+
+  .problem-transition svg {
+    fill: none;
+    stroke: var(--color-gray-400);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .problem-transition line,
+  .problem-transition polyline {
+    transition: stroke 0.4s ease;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .problem-transition.is-visible svg * {
+      stroke: var(--color-accent);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .problem-track {
+      height: 230vh;
+    }
+
+    .problem-sticky {
+      top: 4.5rem;
+    }
+
+    .pz-stage {
+      width: min(100%, calc((100vh - 9rem) * var(--ar)));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .problem-statement {
+      font-size: var(--fs-md);
+    }
+  }
+</style>
+
+<script>
+  const track = document.getElementById('problem-track');
+  const sticky = document.getElementById('problem-sticky');
+  const stage = document.getElementById('pz-stage');
+  const svg = document.getElementById('pz-threads');
+
+  if (track && sticky && stage && svg) {
+    const cards = Array.from(stage.querySelectorAll('.pz-card'));
+    const NS = 'http://www.w3.org/2000/svg';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const accent =
+      getComputedStyle(sticky).getPropertyValue('--color-accent').trim() || '#0066FF';
+
+    // Posiciones [x, y, rotación] en el sistema de coordenadas de cada composición
+    const LAYOUTS = {
+      desktop: {
+        w: 1000, h: 600, c: [500, 300], amp: 7,
+        chaos: [[140, 125, -9], [420, 70, 6], [720, 150, -5], [870, 340, 9], [290, 350, 7], [640, 480, -8]],
+        order: [[214, 192], [500, 85], [786, 192], [786, 408], [500, 515], [214, 408]],
+      },
+      mobile: {
+        w: 600, h: 760, c: [300, 380], amp: 5,
+        chaos: [[150, 170, -8], [410, 90, 6], [450, 300, -5], [170, 430, 8], [420, 570, 7], [190, 660, -7]],
+        order: [[140, 120], [460, 120], [120, 380], [480, 380], [140, 640], [460, 640]],
+      },
+    };
+
+    // Desvíos de las curvas enredadas de cada hilo (se endurecen hasta quedar rectas)
+    const TANGLE = [
+      [-150, 110, 120, -100], [140, -100, -130, 110], [-110, -120, 150, 90],
+      [150, 100, -110, -140], [-140, -90, 130, 130], [110, 140, -150, -100],
+    ];
+
+    // Los estilos con alcance de Astro no llegan a elementos creados por JS,
+    // por eso los atributos del trazo se definen aquí directamente.
+    function makePath(dash) {
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke-linecap', 'round');
+      p.setAttribute('vector-effect', 'non-scaling-stroke');
+      if (dash) p.setAttribute('stroke-dasharray', dash);
+      svg.appendChild(p);
+      return p;
+    }
+    const extra = cards.map(() => makePath('3 7'));
+    const main = cards.map(() => makePath(''));
+
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+    const smooth = (v) => {
+      const t = clamp(v, 0, 1);
+      return t * t * (3 - 2 * t);
+    };
+
+    let layout = LAYOUTS.desktop;
+    let stickyTop = 80;
+    let raf = 0;
+    let visible = false;
+
+    function applyLayout() {
+      const mobile = window.matchMedia('(max-width: 760px)').matches;
+      layout = mobile ? LAYOUTS.mobile : LAYOUTS.desktop;
+      sticky.dataset.layout = mobile ? 'mobile' : 'desktop';
+      sticky.style.setProperty('--ar', String(layout.w / layout.h));
+      svg.setAttribute('viewBox', `0 0 ${layout.w} ${layout.h}`);
+      stickyTop = parseFloat(getComputedStyle(sticky).top) || 0;
+      kick();
+    }
+
+    function progress() {
+      const total = track.offsetHeight - sticky.offsetHeight;
+      if (total <= 0) return 0;
+      const raw = (stickyTop - track.getBoundingClientRect().top) / total;
+      return clamp(raw / 0.82, 0, 1); // termina de ordenarse antes de soltar la escena
+    }
+
+    function render(t) {
+      const L = layout;
+      const sc = L.w / 1000;
+      const [hx, hy] = L.c;
+      const p = progress();
+      const eHub = smooth((p - 0.35) / 0.5);
+
+      sticky.style.setProperty('--e', eHub.toFixed(3));
+      sticky.style.setProperty('--p', p.toFixed(3));
+      sticky.classList.toggle('is-done', eHub > 0.98);
+
+      const pts = cards.map((card, i) => {
+        const ce = smooth((p - 0.08 - i * 0.04) / 0.5);
+        const [cx, cy, cr] = L.chaos[i];
+        const [ox, oy] = L.order[i];
+        const wob = reduce ? 0 : L.amp * (1 - ce);
+        const x = cx + (ox - cx) * ce + Math.sin(t / 900 + i * 1.7) * wob;
+        const y = cy + (oy - cy) * ce + Math.cos(t / 1100 + i * 2.3) * wob;
+
+        card.style.left = (x / L.w) * 100 + '%';
+        card.style.top = (y / L.h) * 100 + '%';
+        card.style.zIndex = String(2 + i);
+        card.style.transform =
+          `translate(-50%, -50%) rotate(${(cr * (1 - ce)).toFixed(2)}deg) scale(${(1 + 0.04 * Math.sin(ce * Math.PI)).toFixed(3)})`;
+        card.style.setProperty('--ce', ce.toFixed(3));
+        return [x, y, ce];
+      });
+
+      pts.forEach(([x, y, ce], i) => {
+        const o = TANGLE[i];
+        const c1 = [x + o[0] * sc * (1 - ce) + (hx - x) * ce / 3, y + o[1] * sc * (1 - ce) + (hy - y) * ce / 3];
+        const c2 = [hx + o[2] * sc * (1 - ce) + (x - hx) * ce / 3, hy + o[3] * sc * (1 - ce) + (y - hy) * ce / 3];
+        const m = main[i];
+        m.setAttribute('d', `M${x.toFixed(1)} ${y.toFixed(1)} C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${hx} ${hy}`);
+        m.setAttribute('stroke', `color-mix(in srgb, ${accent} ${(ce * 100).toFixed(0)}%, #c3cfe0)`);
+        m.setAttribute('stroke-width', (1.2 + ce * 1.6).toFixed(2));
+
+        // Hilos sueltos que se enredan entre tarjetas y desaparecen al ordenarse
+        const j = (i + 2) % pts.length;
+        const [x2, y2, ce2] = pts[j];
+        const qx = (x + x2) / 2 + TANGLE[j][0] * 0.5 * sc;
+        const qy = (y + y2) / 2 + TANGLE[j][1] * 0.5 * sc;
+        const e = extra[i];
+        e.setAttribute('d', `M${x.toFixed(1)} ${y.toFixed(1)} Q${qx.toFixed(1)} ${qy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`);
+        e.setAttribute('stroke', '#cbd5e4');
+        e.setAttribute('stroke-width', '1.2');
+        e.setAttribute('opacity', (Math.max(0, 1 - Math.max(ce, ce2) * 1.6) * 0.7).toFixed(2));
+      });
+    }
+
+    function frame(t) {
+      render(t);
+      raf = visible && !reduce ? requestAnimationFrame(frame) : 0;
+    }
+
+    function kick() {
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entries) => {
+          visible = entries[0].isIntersecting;
+          if (visible) kick();
+        },
+        { rootMargin: '200px 0px' }
+      ).observe(track);
+    } else {
+      visible = true;
+    }
+
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', applyLayout);
+    applyLayout();
+  }
+
+  const arrow = document.querySelector('.problem-transition');
+  if (arrow) {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.25 }
+      );
+      io.observe(arrow);
+    } else {
+      arrow.classList.add('is-visible');
+    }
+  }
+</script>

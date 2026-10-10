@@ -1,0 +1,1596 @@
+---
+import { icons } from '../data/icons';
+
+// Ilustración de referencia de un elemento del sistema.
+// No es una captura: usa barras de relleno en lugar de datos reales.
+interface Props {
+  kind:
+    | 'document'
+    | 'checklist'
+    | 'form'
+    | 'table'
+    | 'timeline'
+    | 'alerts'
+    | 'bars'
+    | 'files'
+    | 'assign'
+    | 'permit'
+    | 'profile'
+    | 'route'
+    | 'notifs'
+    | 'donut'
+    | 'stepper'
+    | 'gallery'
+    | 'calendar'
+    | 'gauge'
+    | 'kanban'
+    | 'builder'
+    | 'quiz'
+    | 'toggles'
+    | 'rating'
+    | 'columns'
+    | 'tags'
+    | 'dashboard';
+  title: string;
+  rows: string[];
+  states?: ('ok' | 'warn')[];
+  labels?: [string, string];
+  active?: number;
+  values?: number[];
+  dynamic?: boolean;
+  variant?: 'person' | 'truck' | 'vehicle' | 'license';
+}
+
+const {
+  kind,
+  title,
+  rows,
+  states = [],
+  labels = ['Vigente', 'Por vencer'],
+  active = -1,
+  values = [],
+  dynamic = false,
+  variant = 'person',
+} = Astro.props;
+
+const widths = [72, 54, 84, 46, 66];
+const w = (i: number) => widths[i % widths.length];
+const blocked = states.includes('warn');
+const isWarn = (i: number) => states[i] === 'warn';
+
+const palette = [
+  'var(--color-primary-light)',
+  'var(--color-accent)',
+  'var(--color-primary-dark)',
+  'var(--color-gray-400)',
+];
+
+// Dona
+const R = 38;
+const C = 2 * Math.PI * R;
+let acc = 0;
+const segs = values.map((v, i) => {
+  const len = (C * v) / 100;
+  const seg = { len, off: -acc, color: palette[i % palette.length] };
+  acc += len;
+  return seg;
+});
+
+// Medidor
+const ARC = Math.PI * 60;
+const pct = values[0] ?? 65;
+
+// Ruta
+const pts = rows.map((_, i) => ({
+  x: rows.length > 1 ? 44 + i * (252 / (rows.length - 1)) : 170,
+  y: i % 2 === 0 ? 100 : 44,
+}));
+const routeD = pts
+  .map((p, i) => {
+    if (i === 0) return `M${p.x} ${p.y}`;
+    const q = pts[i - 1];
+    const mx = (q.x + p.x) / 2;
+    return `C${mx} ${q.y} ${mx} ${p.y} ${p.x} ${p.y}`;
+  })
+  .join(' ');
+
+// Calendario (35 celdas, el mes empieza en miércoles)
+const weekdays = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+const cells = Array.from({ length: 35 }, (_, i) => i - 1);
+---
+
+<div class={`ill ill-${kind}`}>
+  <div class="ill-head">
+    <span class="ill-dot"></span>
+    <span class="ill-title">{title}</span>
+    <span class="ill-pill"></span>
+  </div>
+
+  <div class="ill-body">
+    {kind === 'document' && (
+      <>
+        {rows.map((r, i) => (
+          <div class="doc-row">
+            <span class="lbl">{r}</span>
+            <span class="sk" style={`width:${w(i)}%`}></span>
+          </div>
+        ))}
+        <div class="doc-foot">
+          <span class="stamp"></span>
+          <span class="sk" style="width:38%"></span>
+        </div>
+      </>
+    )}
+
+    {kind === 'permit' && (
+      <>
+        <div class="pm-band">
+          <span class="pm-logo"></span>
+          <span class="pm-lines">
+            <span class="sk" style="width:64%"></span>
+            <span class="sk" style="width:40%"></span>
+          </span>
+        </div>
+        {rows.map((r, i) => (
+          <div class="doc-row">
+            <span class="lbl">{r}</span>
+            <span class="sk" style={`width:${w(i)}%`}></span>
+          </div>
+        ))}
+        <div class="pm-foot">
+          <span class="qr"></span>
+          <span class="pm-sign">
+            <span class="sk" style="width:80%"></span>
+            <span class="sk" style="width:52%"></span>
+          </span>
+        </div>
+      </>
+    )}
+
+    {kind === 'profile' && (
+      <>
+        <div class="pf-top">
+          <span class={`pf-media pf-${variant}`}>
+            {(variant === 'truck' || variant === 'vehicle') && (
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" set:html={icons.truck} />
+            )}
+            {variant === 'person' && (
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+              </svg>
+            )}
+            {variant === 'license' && (
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                <circle cx="8.5" cy="11" r="2" />
+                <line x1="13" y1="10" x2="19" y2="10" />
+                <line x1="13" y1="14" x2="18" y2="14" />
+              </svg>
+            )}
+          </span>
+          <span class="pf-lines">
+            <span class="sk" style="width:70%"></span>
+            <span class="sk" style="width:46%"></span>
+          </span>
+        </div>
+        <div class="chips">
+          {rows.map((r, i) => (
+            <span class={`dchip ${isWarn(i) ? 'warn' : 'ok'}`}>
+              <i></i>
+              {r}
+            </span>
+          ))}
+        </div>
+        <div class="pf-foot">
+          <span class="sk" style="width:84%"></span>
+          <span class="sk" style="width:58%"></span>
+        </div>
+      </>
+    )}
+
+    {kind === 'checklist' &&
+      rows.map((r, i) => (
+        <div class={`chk ${isWarn(i) ? 'warn' : 'ok'}`}>
+          <span class="box">{isWarn(i) ? '!' : '✓'}</span>
+          <span class="lbl">{r}</span>
+          <span class="sk" style={`width:${w(i)}%`}></span>
+        </div>
+      ))}
+
+    {kind === 'form' && (
+      <>
+        {rows.map((r) => (
+          <div class="fld">
+            <span class="lbl">{r}</span>
+            <span class="inp"></span>
+          </div>
+        ))}
+        {dynamic && <span class="add">+ Campo</span>}
+      </>
+    )}
+
+    {kind === 'builder' && (
+      <>
+        {rows.map((r, i) => (
+          <div class={`bld ${i === active ? 'sel' : ''}`}>
+            <span class="grip" aria-hidden="true">⋮⋮</span>
+            <span class="lbl">{r}</span>
+            <span class="bld-type"></span>
+          </div>
+        ))}
+        <span class="add">+ Campo</span>
+      </>
+    )}
+
+    {kind === 'table' &&
+      rows.map((r, i) => (
+        <div class="trow">
+          <span class="lbl">{r}</span>
+          <span class="sk" style={`width:${w(i)}%`}></span>
+          <span class={`chip ${isWarn(i) ? 'warn' : 'ok'}`}>
+            {isWarn(i) ? labels[1] : labels[0]}
+          </span>
+        </div>
+      ))}
+
+    {kind === 'timeline' && (
+      <ol class="tl">
+        {rows.map((r, i) => (
+          <li class={`${i < active ? 'done' : ''} ${i === active ? 'now' : ''}`}>
+            <span class="tl-dot"></span>
+            <span class="lbl">{r}</span>
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {kind === 'stepper' && (
+      <>
+        <ol class="stp">
+          {rows.map((r, i) => (
+            <li class={`${i < active ? 'done' : ''} ${i === active ? 'now' : ''}`}>
+              <span class="stp-dot">{i < active ? '✓' : i + 1}</span>
+              <span class="lbl">{r}</span>
+            </li>
+          ))}
+        </ol>
+        <div class="stp-card">
+          <span class="sk" style="width:70%"></span>
+          <span class="sk" style="width:48%"></span>
+        </div>
+      </>
+    )}
+
+    {kind === 'route' && (
+      <svg class="rt" viewBox="0 0 340 140" role="presentation">
+        <path class="rt-line" d={routeD} fill="none" />
+        {pts.map((p, i) => (
+          <>
+            <circle
+              class={`rt-pt ${i < active ? 'done' : ''} ${i === active ? 'now' : ''}`}
+              cx={p.x}
+              cy={p.y}
+              r={i === active ? 8 : 6}
+            />
+            <text class="rt-txt" x={p.x} y={i % 2 === 0 ? p.y + 24 : p.y - 14} text-anchor="middle">
+              {rows[i]}
+            </text>
+          </>
+        ))}
+      </svg>
+    )}
+
+    {kind === 'alerts' &&
+      rows.map((r, i) => (
+        <div class={`alr ${isWarn(i) ? 'warn' : 'ok'}`}>
+          <span class="alr-ic">{isWarn(i) ? '!' : '✓'}</span>
+          <span class="lbl">{r}</span>
+          <span class={`chip ${isWarn(i) ? 'warn' : 'ok'}`}>
+            {isWarn(i) ? labels[1] : labels[0]}
+          </span>
+        </div>
+      ))}
+
+    {kind === 'notifs' &&
+      rows.map((r, i) => (
+        <div class={`ntf ${isWarn(i) ? 'warn' : 'ok'}`}>
+          <span class="ntf-ic">{isWarn(i) ? '!' : '✓'}</span>
+          <span class="ntf-txt">
+            <span class="lbl">{r}</span>
+            <span class="sk" style={`width:${w(i)}%`}></span>
+          </span>
+          <span class="ntf-time"></span>
+        </div>
+      ))}
+
+    {kind === 'bars' &&
+      rows.map((r, i) => (
+        <div class="bar">
+          <span class="lbl">{r}</span>
+          <span class="track">
+            <span class="fill" style={`width:${values[i] ?? 60}%`}></span>
+          </span>
+        </div>
+      ))}
+
+    {kind === 'columns' && (
+      <div class="cols">
+        {rows.map((r, i) => (
+          <div class="col">
+            <span class="col-track">
+              <span class={`col-bar ${i === active ? 'hl' : ''}`} style={`height:${values[i] ?? 50}%`}></span>
+            </span>
+            <span class="lbl">{r}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {kind === 'dashboard' && (
+      <>
+        <div class="kpis">
+          {rows.slice(0, 3).map((r, i) => (
+            <div class="kpi">
+              <span class="lbl">{r}</span>
+              <span class={`sk big ${i === 1 ? 'acc' : ''}`} style={`width:${w(i)}%`}></span>
+            </div>
+          ))}
+        </div>
+        <div class="cols mini">
+          {values.map((v, i) => (
+            <div class="col">
+              <span class="col-track">
+                <span class={`col-bar ${i === active ? 'hl' : ''}`} style={`height:${v}%`}></span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
+    {kind === 'donut' && (
+      <div class="dn">
+        <svg class="dn-svg" viewBox="0 0 100 100" role="presentation">
+          <g transform="rotate(-90 50 50)">
+            <circle cx="50" cy="50" r={R} fill="none" stroke-width="14" style="stroke:var(--color-gray-100)" />
+            {segs.map((s) => (
+              <circle
+                cx="50"
+                cy="50"
+                r={R}
+                fill="none"
+                stroke-width="14"
+                stroke-dasharray={`${s.len} ${C - s.len}`}
+                stroke-dashoffset={s.off}
+                style={`stroke:${s.color}`}
+              />
+            ))}
+          </g>
+        </svg>
+        <ul class="dn-leg">
+          {rows.map((r, i) => (
+            <li>
+              <i style={`background:${palette[i % palette.length]}`}></i>
+              <span class="lbl">{r}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {kind === 'gauge' && (
+      <>
+        <div class="gg">
+          <svg class="gg-svg" viewBox="0 0 160 92" role="presentation">
+            <path class="gg-bg" d="M20 80 A60 60 0 0 1 140 80" fill="none" stroke-width="14" stroke-linecap="round" />
+            <path
+              class="gg-fg"
+              d="M20 80 A60 60 0 0 1 140 80"
+              fill="none"
+              stroke-width="14"
+              stroke-linecap="round"
+              stroke-dasharray={`${(ARC * pct) / 100} ${ARC}`}
+            />
+          </svg>
+          <span class="sk" style="width:30%"></span>
+        </div>
+        {rows.map((r, i) => (
+          <div class="gg-row">
+            <span class="lbl">{r}</span>
+            <span class="sk" style={`width:${w(i)}%`}></span>
+          </div>
+        ))}
+      </>
+    )}
+
+    {kind === 'calendar' && (
+      <div class="cal">
+        {weekdays.map((d) => (
+          <span class="cal-wd">{d}</span>
+        ))}
+        {cells.map((d) => (
+          <span
+            class={`cal-day ${d < 1 || d > 31 ? 'off' : ''} ${values.includes(d) ? 'mark' : ''} ${d === active ? 'warn' : ''}`}
+          >
+            {d >= 1 && d <= 31 ? d : ''}
+          </span>
+        ))}
+      </div>
+    )}
+
+    {kind === 'kanban' && (
+      <div class="kb" style={`grid-template-columns:repeat(${rows.length}, minmax(0, 1fr))`}>
+        {rows.map((r, i) => (
+          <div class={`kb-col ${i === active ? 'now' : ''}`}>
+            <span class="lbl">{r}</span>
+            {Array.from({ length: values[i] ?? 2 }).map((_, k) => (
+              <span class="kb-card">
+                <span class="sk" style={`width:${w(i + k)}%`}></span>
+                <span class="sk" style="width:40%"></span>
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    )}
+
+    {kind === 'quiz' && (
+      <>
+        <div class="qz-q">
+          <span class="sk" style="width:90%"></span>
+          <span class="sk" style="width:62%"></span>
+        </div>
+        {rows.map((r, i) => (
+          <div class={`qz-opt ${i === active ? 'sel' : ''}`}>
+            <span class="radio"></span>
+            <span class="lbl">{r}</span>
+          </div>
+        ))}
+      </>
+    )}
+
+    {kind === 'toggles' &&
+      rows.map((r, i) => (
+        <div class="tgl">
+          <span class="lbl">{r}</span>
+          <span class="seg">
+            <span class={`seg-o ${isWarn(i) ? '' : 'on-ok'}`}>Sí</span>
+            <span class={`seg-o ${isWarn(i) ? 'on-warn' : ''}`}>No</span>
+          </span>
+        </div>
+      ))}
+
+    {kind === 'rating' &&
+      rows.map((r, i) => (
+        <div class="rate">
+          <span class="lbl">{r}</span>
+          <span class="stars" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <span class={`star ${n <= (values[i] ?? 3) ? 'on' : ''}`}>★</span>
+            ))}
+          </span>
+        </div>
+      ))}
+
+    {kind === 'tags' && (
+      <>
+        <div class="chips">
+          {rows.map((r, i) => (
+            <span class={`dchip lg ${isWarn(i) ? 'warn' : 'ok'}`}>
+              <i></i>
+              {r}
+            </span>
+          ))}
+        </div>
+        <div class="pf-foot">
+          <span class="sk" style="width:82%"></span>
+          <span class="sk" style="width:54%"></span>
+          <span class="sk" style="width:68%"></span>
+        </div>
+      </>
+    )}
+
+    {kind === 'files' && (
+      <div class="files">
+        {rows.map((r) => (
+          <div class="file">
+            <span class="file-ic"></span>
+            <span class="lbl">{r}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {kind === 'gallery' && (
+      <div class="gal">
+        {rows.map((r) => (
+          <div class="tile">
+            <span class="tile-img">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <circle cx="9" cy="10" r="1.6" />
+                <path d="M4 18l5-5 4 4 3-3 4 4" />
+              </svg>
+            </span>
+            <span class="lbl">{r}</span>
+          </div>
+        ))}
+        <div class="tile tile-add">
+          <span class="tile-img">+</span>
+          <span class="lbl">Agregar</span>
+        </div>
+      </div>
+    )}
+
+    {kind === 'assign' && (
+      <>
+        {rows.map((r, i) => (
+          <div class={`asg ${isWarn(i) ? 'warn' : 'ok'}`}>
+            <span class="asg-ic">{isWarn(i) ? '!' : '✓'}</span>
+            <span class="asg-name">{r}</span>
+            <span class="asg-st">
+              {isWarn(i) ? 'Requisito pendiente' : 'Requisitos vigentes'}
+            </span>
+          </div>
+        ))}
+        <div class={`asg-btn ${blocked ? 'is-blocked' : ''}`}>Asignar servicio</div>
+        {blocked && (
+          <p class="asg-note">Asignación bloqueada hasta cumplir los requisitos</p>
+        )}
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .ill {
+    width: 100%;
+    max-width: 380px;
+    overflow: hidden;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .ill-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--color-bg-alt);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ill-dot {
+    flex: 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .ill-title {
+    min-width: 0;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  .ill-pill {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 8px;
+    margin-left: auto;
+    border-radius: 4px;
+    background: var(--color-gray-200);
+  }
+
+  .ill-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.9rem;
+  }
+
+  /* Las etiquetas pueden saltar de línea: nada se corta */
+  .lbl {
+    min-width: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-text-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .sk {
+    display: block;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--color-gray-200);
+  }
+
+  .sk.big {
+    height: 14px;
+    background: var(--color-primary-light);
+    opacity: 0.8;
+  }
+
+  .sk.big.acc {
+    background: var(--color-accent);
+  }
+
+  .chip {
+    margin-left: auto;
+    padding: 0.15rem 0.6rem;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .chip.ok {
+    background: color-mix(in srgb, var(--color-primary-light) 14%, var(--color-white));
+    color: var(--color-primary-dark);
+  }
+
+  .chip.warn {
+    background: color-mix(in srgb, var(--color-accent) 14%, var(--color-white));
+    color: var(--color-accent-dark);
+  }
+
+  /* Píldoras con punto de estado (perfil y etiquetas) */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .dchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-ink);
+  }
+
+  .dchip i {
+    flex: 0 0 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .dchip.ok i { background: var(--color-primary-light); }
+  .dchip.warn { border-color: var(--color-accent); }
+  .dchip.warn i { background: var(--color-accent); }
+
+  .dchip.lg {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  /* Documento */
+  .doc-row {
+    display: grid;
+    grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .doc-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.3rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .stamp {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    border: 2px dashed var(--color-gray-400);
+    border-radius: 50%;
+  }
+
+  /* Permiso con código QR */
+  .pm-band {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.7rem;
+    background: color-mix(in srgb, var(--color-primary-light) 12%, var(--color-white));
+    border-radius: var(--radius-sm);
+  }
+
+  .pm-logo {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--color-primary-dark);
+  }
+
+  .pm-lines,
+  .pf-lines,
+  .pm-sign {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .pm-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 0.2rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .qr {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    padding: 4px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background:
+      repeating-conic-gradient(var(--color-ink) 0% 25%, transparent 0% 50%) 4px 4px / 8px 8px content-box,
+      var(--color-white);
+    background-clip: content-box, border-box;
+  }
+
+  /* Perfil: persona, vehículo o licencia */
+  .pf-top {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .pf-media {
+    display: grid;
+    place-items: center;
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    color: var(--color-primary-dark);
+    background: color-mix(in srgb, var(--color-primary-light) 12%, var(--color-white));
+    border: 1.5px solid var(--color-primary-light);
+  }
+
+  .pf-person { border-radius: 50%; }
+  .pf-truck,
+  .pf-vehicle { border-radius: 12px; }
+  .pf-license { width: 64px; flex-basis: 64px; border-radius: 8px; }
+
+  .pf-media svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pf-foot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Lista de verificación */
+  .chk {
+    display: grid;
+    grid-template-columns: 22px minmax(0, auto) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .box {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-white);
+  }
+
+  .chk.ok .box { background: var(--color-primary-light); }
+  .chk.warn .box { background: var(--color-accent); }
+
+  /* Formulario */
+  .fld {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .inp {
+    display: block;
+    height: 28px;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .add {
+    align-self: flex-start;
+    padding: 0.3rem 0.8rem;
+    border: 1.5px dashed var(--color-primary-light);
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  /* Constructor de formularios */
+  .bld {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) 46px;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .bld.sel {
+    background: var(--color-white);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 14%, transparent);
+  }
+
+  .grip {
+    font-size: 0.8rem;
+    line-height: 1;
+    letter-spacing: -0.1em;
+    color: var(--color-gray-400);
+  }
+
+  .bld-type {
+    display: block;
+    height: 14px;
+    border-radius: 7px;
+    background: var(--color-gray-200);
+  }
+
+  /* Tabla */
+  .trow {
+    display: grid;
+    grid-template-columns: minmax(0, 104px) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.7rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .trow:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  /* Línea de tiempo vertical */
+  .tl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tl li {
+    position: relative;
+    min-height: 18px;
+    padding-left: 26px;
+  }
+
+  .tl li:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 15px;
+    bottom: calc(-0.9rem - 3px);
+    width: 2px;
+    background: var(--color-gray-200);
+  }
+
+  .tl li.done::before {
+    background: var(--color-primary-light);
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 12px;
+    height: 12px;
+    background: var(--color-white);
+    border: 2px solid var(--color-gray-400);
+    border-radius: 50%;
+  }
+
+  .tl li.done .tl-dot {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+  }
+
+  .tl li.now .tl-dot {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+
+  /* Pasos horizontales */
+  .stp {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stp li {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .stp li:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    right: 50%;
+    left: -50%;
+    height: 2px;
+    background: var(--color-gray-200);
+  }
+
+  .stp li.done::before,
+  .stp li.now::before {
+    background: var(--color-primary-light);
+  }
+
+  .stp-dot {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 2px solid var(--color-gray-200);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--color-gray-400);
+  }
+
+  .stp li.done .stp-dot {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+    color: var(--color-white);
+  }
+
+  .stp li.now .stp-dot {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+
+  .stp-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.7rem;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Ruta */
+  .rt {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .rt-line {
+    stroke: var(--color-gray-400);
+    stroke-width: 2.5;
+    stroke-dasharray: 5 5;
+    stroke-linecap: round;
+  }
+
+  .rt-pt {
+    fill: var(--color-white);
+    stroke: var(--color-gray-400);
+    stroke-width: 2.5;
+  }
+
+  .rt-pt.done {
+    fill: var(--color-primary-light);
+    stroke: var(--color-primary-light);
+  }
+
+  .rt-pt.now {
+    fill: var(--color-accent);
+    stroke: var(--color-accent);
+  }
+
+  .rt-txt {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--color-text-muted);
+  }
+
+  /* Alertas */
+  .alr {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .alr.warn {
+    border-color: var(--color-accent);
+  }
+
+  .alr-ic {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-white);
+  }
+
+  .alr.ok .alr-ic { background: var(--color-primary-light); }
+  .alr.warn .alr-ic { background: var(--color-accent); }
+
+  /* Notificaciones */
+  .ntf {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) 26px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-left-width: 4px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 6px rgba(13, 13, 13, 0.06);
+  }
+
+  .ntf.ok { border-left-color: var(--color-primary-light); }
+  .ntf.warn { border-left-color: var(--color-accent); }
+
+  .ntf-ic {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-white);
+  }
+
+  .ntf.ok .ntf-ic { background: var(--color-primary-light); }
+  .ntf.warn .ntf-ic { background: var(--color-accent); }
+
+  .ntf-txt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .ntf-time {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-gray-200);
+  }
+
+  /* Barras horizontales */
+  .bar {
+    display: grid;
+    grid-template-columns: minmax(0, 112px) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .track {
+    display: block;
+    height: 10px;
+    overflow: hidden;
+    background: var(--color-gray-200);
+    border-radius: 5px;
+  }
+
+  .fill {
+    display: block;
+    height: 100%;
+    background: var(--color-primary-light);
+    border-radius: 5px;
+  }
+
+  /* Columnas verticales */
+  .cols {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+    padding: 0.2rem 0.3rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .col {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+    padding-bottom: 0.4rem;
+    text-align: center;
+  }
+
+  .col-track {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 104px;
+  }
+
+  .col-bar {
+    display: block;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    background: var(--color-primary-light);
+  }
+
+  .col-bar.hl {
+    background: var(--color-accent);
+  }
+
+  /* Panel gerencial */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .cols.mini {
+    gap: 0.35rem;
+  }
+
+  .cols.mini .col {
+    padding-bottom: 0;
+  }
+
+  .cols.mini .col-track {
+    height: 66px;
+  }
+
+  /* Dona */
+  .dn {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  .dn-svg {
+    flex: 0 0 110px;
+    width: 110px;
+    height: 110px;
+  }
+
+  .dn-leg {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .dn-leg li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dn-leg i {
+    flex: 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Medidor */
+  .gg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
+  }
+
+  .gg-svg {
+    width: 62%;
+    height: auto;
+  }
+
+  .gg-bg { stroke: var(--color-gray-200); }
+  .gg-fg { stroke: var(--color-primary-light); }
+
+  .gg-row {
+    display: grid;
+    grid-template-columns: minmax(0, 112px) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  /* Calendario */
+  .cal {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+    text-align: center;
+  }
+
+  .cal-wd {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--color-gray-400);
+  }
+
+  .cal-day {
+    display: grid;
+    place-items: center;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .cal-day.mark {
+    background: color-mix(in srgb, var(--color-primary-light) 18%, var(--color-white));
+    color: var(--color-primary-dark);
+  }
+
+  .cal-day.warn {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  /* Tablero */
+  .kb {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .kb-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+  }
+
+  .kb-col.now {
+    border-top-color: var(--color-accent);
+  }
+
+  .kb-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.45rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+  }
+
+  /* Cuestionario */
+  .qz-q {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-bottom: 0.2rem;
+  }
+
+  .qz-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .qz-opt.sel {
+    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, var(--color-white));
+  }
+
+  .radio {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-gray-400);
+    border-radius: 50%;
+  }
+
+  .qz-opt.sel .radio {
+    border-color: var(--color-accent);
+    background: radial-gradient(circle, var(--color-accent) 40%, transparent 45%);
+  }
+
+  /* Interruptores Sí / No */
+  .tgl {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .tgl:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .seg {
+    display: inline-flex;
+    flex: 0 0 auto;
+    padding: 2px;
+    background: var(--color-gray-100);
+    border-radius: 99px;
+  }
+
+  .seg-o {
+    min-width: 34px;
+    padding: 0.15rem 0.6rem;
+    text-align: center;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-gray-400);
+  }
+
+  .seg-o.on-ok {
+    background: var(--color-primary-light);
+    color: var(--color-white);
+  }
+
+  .seg-o.on-warn {
+    background: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  /* Calificación con estrellas */
+  .rate {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--color-gray-50);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .stars {
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 0.1rem;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .star { color: var(--color-gray-200); }
+  .star.on { color: var(--color-accent); }
+
+  /* Archivos */
+  .files {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.9rem 0.5rem;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .file-ic {
+    width: 26px;
+    height: 32px;
+    border: 1.6px solid var(--color-primary-dark);
+    border-radius: 3px;
+    background:
+      linear-gradient(var(--color-gray-200), var(--color-gray-200)) 5px 12px / 14px 2px no-repeat,
+      linear-gradient(var(--color-gray-200), var(--color-gray-200)) 5px 18px / 14px 2px no-repeat,
+      linear-gradient(var(--color-gray-200), var(--color-gray-200)) 5px 24px / 9px 2px no-repeat;
+  }
+
+  /* Galería de fotos */
+  .gal {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    text-align: center;
+  }
+
+  .tile-img {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-light) 22%, var(--color-white)),
+      var(--color-gray-100)
+    );
+    color: var(--color-primary-dark);
+  }
+
+  .tile-img svg {
+    width: 26px;
+    height: 26px;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tile-add .tile-img {
+    background: none;
+    border: 1.5px dashed var(--color-primary-light);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  /* Asignación */
+  .asg {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+  }
+
+  .asg.warn {
+    border-color: var(--color-accent);
+  }
+
+  .asg-ic {
+    display: grid;
+    place-items: center;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--color-white);
+  }
+
+  .asg.ok .asg-ic { background: var(--color-primary-light); }
+  .asg.warn .asg-ic { background: var(--color-accent); }
+
+  .asg-name {
+    min-width: 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .asg-st {
+    margin-left: auto;
+    text-align: right;
+    font-size: 0.76rem;
+    line-height: 1.25;
+    color: var(--color-text-muted);
+  }
+
+  .asg-btn {
+    margin-top: 0.2rem;
+    padding: 0.6rem;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--color-accent);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
+  }
+
+  .asg-btn.is-blocked {
+    background: var(--color-gray-200);
+    color: var(--color-gray-400);
+    cursor: not-allowed;
+  }
+
+  .asg-note {
+    margin: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-accent-dark);
+  }
+
+  /* En móvil la ilustración se muestra más compacta (completa, sin recortes)
+     para que la tarjeta fija no tape la lista de elementos. */
+  @media (max-width: 860px) {
+    .ill {
+      zoom: 0.72;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .ill {
+      zoom: 0.66;
+    }
+  }
+</style>

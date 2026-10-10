@@ -1,0 +1,334 @@
+---
+const tiles = [
+  {
+    before: 'Excel',
+    title: 'Información conectada',
+    desc: 'Operación, flota, talento humano y proveedores comparten los mismos datos, sin cruzar hojas de cálculo.',
+    icon: '<rect x="16" y="16" width="6" height="6" rx="1" /><rect x="2" y="16" width="6" height="6" rx="1" /><rect x="9" y="2" width="6" height="6" rx="1" /><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" /><path d="M12 12V8" />',
+  },
+  {
+    before: 'WhatsApp',
+    title: 'Novedades con trazabilidad',
+    desc: 'Alertas, inspecciones y evidencias quedan registradas en la plataforma, no perdidas en un chat.',
+    icon: '<circle cx="12" cy="12" r="10" /><path d="m16 9-5.5 5.5L8 12" />',
+  },
+  {
+    before: 'Documentos físicos',
+    title: 'Documentación a la mano',
+    desc: 'Los documentos de la flota y del personal viven en un solo lugar, listos cuando se necesitan.',
+    icon: '<path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />',
+  },
+  {
+    before: 'Aplicaciones independientes',
+    title: 'Una sola plataforma',
+    desc: 'Operaciones, flota, mantenimiento, HSEQ, talento humano y proveedores trabajando juntos.',
+    icon: '<path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />',
+  },
+  {
+    before: 'Vencimientos sin control',
+    title: 'Vencimientos a la vista',
+    desc: 'Seguimiento de documentos y licencias para actuar antes de que se venzan.',
+    icon: '<path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /><path d="m9 15 2 2 4-4" />',
+  },
+  {
+    before: 'Evidencias difíciles de encontrar',
+    title: 'Evidencias en su lugar',
+    desc: 'Los soportes de la operación y las inspecciones quedan guardados y disponibles cuando los necesites.',
+    icon: '<path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z" /><circle cx="12" cy="13" r="3" />',
+  },
+];
+
+const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
+---
+
+<section class="solution" id="solucion">
+  <div class="container">
+    <div class="sol-header">
+      <h2>Todo lo disperso, conectado en una sola plataforma</h2>
+      <p>
+        ZIEETE reúne la operación, la flota, el mantenimiento, la seguridad vial,
+        el talento humano y los proveedores. Lo que hoy vive en una hoja, un chat
+        o una carpeta tiene su lugar en un mismo sistema.
+      </p>
+    </div>
+
+    <div class="sol-grid" id="sol-grid">
+      {tiles.map((t, i) => (
+        <article class="sol-tile" style={`--i:${i};`}>
+          <span class="sol-before">Antes: <s>{t.before}</s></span>
+          <div class="sol-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" set:html={t.icon} />
+          </div>
+          <h3>{t.title}</h3>
+          <p>{t.desc}</p>
+        </article>
+      ))}
+
+      <div class="sol-banner" style="--i:6;">
+        <p class="sol-verbs" aria-label="Gestiona. Controla. Capacita. Evalúa. Decide.">
+          {verbs.map((v, i) => (
+            <span style={`--v:${i};`}>{v}.</span>
+          ))}
+        </p>
+        <div class="sol-cta">
+          <a href="#contacto" class="btn btn-primary">Solicitar demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .solution {
+    --sl-accent: var(--color-accent);
+    --sl-ink: var(--color-ink);
+    --sl-muted: var(--color-text-muted);
+    --sl-line: var(--color-border);
+    padding-block: var(--space-2xl);
+    background: var(--color-white);
+  }
+
+  .sol-header {
+    max-width: 62ch;
+    margin-bottom: var(--space-lg);
+  }
+
+  .sol-header p {
+    font-size: var(--fs-md);
+  }
+
+  .sol-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+
+  .sol-tile {
+    --mx: 50%;
+    --my: 0%;
+    position: relative;
+    grid-column: span 2;
+    padding: 1.4rem 1.4rem 1.5rem;
+    background: var(--color-white);
+    border: 1px solid var(--sl-line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      opacity 0.6s ease;
+  }
+
+  /* Luz que sigue al cursor */
+  .sol-tile::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      280px circle at var(--mx) var(--my),
+      color-mix(in srgb, var(--sl-accent) 14%, transparent),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .sol-tile:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--sl-accent) 55%, var(--sl-line));
+    box-shadow: 0 22px 40px -22px color-mix(in srgb, var(--sl-accent) 45%, transparent);
+  }
+
+  .sol-tile:hover::before { opacity: 1; }
+
+  .sol-tile > * { position: relative; }
+
+  .sol-before {
+    display: inline-block;
+    margin-bottom: 1.1rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 99px;
+    background: var(--color-bg-alt);
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--sl-muted);
+  }
+
+  /* La palabra del problema se tacha cuando aparece la tarjeta */
+  .sol-before s {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .sol-before s::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 54%;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--sl-accent);
+    transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sol-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0.9rem;
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--sl-accent) 11%, var(--color-white));
+    color: var(--sl-accent);
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .sol-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .sol-tile:hover .sol-icon {
+    background: var(--sl-accent);
+    color: var(--color-white);
+    transform: rotate(-6deg) scale(1.08);
+  }
+
+  .sol-tile h3 {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    color: var(--sl-ink);
+  }
+
+  .sol-tile p {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: var(--sl-muted);
+  }
+
+  /* ---------- Cierre: los cinco verbos ---------- */
+  .sol-banner {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem 2rem;
+    padding: 1.6rem 1.8rem;
+    border-radius: var(--radius-md);
+    border: 1px solid color-mix(in srgb, var(--sl-accent) 25%, var(--sl-line));
+    background: linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--sl-accent) 9%, var(--color-white)),
+      var(--color-bg-alt)
+    );
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sol-verbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+    color: var(--sl-ink);
+  }
+
+  .sol-verbs span {
+    display: inline-block;
+  }
+
+  /* Cada verbo se ilumina una sola vez, en secuencia, y queda fijo */
+  @media (prefers-reduced-motion: no-preference) {
+    .solution.is-in .sol-verbs span {
+      animation: sol-verb 0.9s ease-out both;
+      animation-delay: calc(var(--v) * 0.6s);
+    }
+  }
+
+  @keyframes sol-verb {
+    0%   { color: color-mix(in srgb, var(--sl-ink) 45%, var(--color-white)); transform: translateY(0); }
+    40%  { color: var(--sl-accent); transform: translateY(-4px); }
+    100% { color: var(--sl-ink); transform: translateY(0); }
+  }
+
+  /* ---------- Entrada al hacer scroll ---------- */
+  .solution.has-js:not(.is-in) .sol-tile,
+  .solution.has-js:not(.is-in) .sol-banner {
+    opacity: 0;
+    transform: translateY(26px) scale(0.97);
+  }
+
+  .solution.is-in .sol-tile,
+  .solution.is-in .sol-banner {
+    transition-delay: calc(var(--i) * 90ms), 0s, 0s, calc(var(--i) * 90ms);
+  }
+
+  .solution.is-in .sol-before s::after {
+    width: 100%;
+    transition-delay: calc(var(--i) * 90ms + 0.55s);
+  }
+
+  /* Terminada la entrada, el hover responde sin retraso */
+  .solution.is-settled .sol-tile,
+  .solution.is-settled .sol-banner {
+    transition-delay: 0s;
+  }
+
+  @media (max-width: 960px) {
+    .sol-tile { grid-column: span 3; }
+  }
+
+  @media (max-width: 600px) {
+    .sol-grid { grid-template-columns: minmax(0, 1fr); }
+    .sol-tile { grid-column: auto; }
+    .sol-banner { padding: 1.3rem 1.2rem; }
+  }
+</style>
+
+<script>
+  const section = document.getElementById('solucion');
+  const grid = document.getElementById('sol-grid');
+
+  if (section && grid) {
+    section.classList.add('has-js');
+
+    // Luz que sigue al cursor dentro de cada tarjeta
+    grid.addEventListener('pointermove', (e) => {
+      const tile = (e.target as HTMLElement).closest('.sol-tile') as HTMLElement | null;
+      if (!tile) return;
+      const r = tile.getBoundingClientRect();
+      tile.style.setProperty('--mx', e.clientX - r.left + 'px');
+      tile.style.setProperty('--my', e.clientY - r.top + 'px');
+    });
+
+    // Entrada escalonada al llegar a la sección
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            section.classList.add('is-in');
+            setTimeout(() => section.classList.add('is-settled'), 1800);
+            io.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      io.observe(grid);
+    } else {
+      section.classList.add('is-in', 'is-settled');
+    }
+  }
+</script>
