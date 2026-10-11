@@ -1,0 +1,119 @@
+---
+import logoZieete from '../assets/brand/logo-zieete.png';
+
+const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  { label: 'Solución', href: '#solucion' },
+  { label: 'Funcionalidades', href: '#funcionalidades' },
+  { label: 'Procesos', href: '#soluciones' },
+  { label: 'Control operativo', href: '#beneficios' },
+  { label: 'Contacto', href: '#contacto' },
+  { label: 'Preguntas frecuentes', href: '#preguntas-frecuentes' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-main">
+      <a class="footer-brand" href="#hero" aria-label="ZIEETE, volver al inicio">
+        <img src={logoZieete.src} width={logoZieete.width} height={logoZieete.height} alt="ZIEETE" loading="lazy" />
+        <span>Gestión para empresas de transporte.</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Navegación del pie de página">
+        {footerLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {currentYear} ZIEETE</span>
+      <a href="#hero">Volver al inicio ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: 2.5rem 1.25rem;
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: minmax(13rem, 0.8fr) minmax(0, 1.2fr);
+    align-items: start;
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .footer-brand {
+    display: grid;
+    justify-items: start;
+    gap: 0.8rem;
+    color: var(--color-white);
+  }
+
+  .footer-brand img {
+    width: min(100%, 170px);
+    height: auto;
+  }
+
+  .footer-brand span {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.88rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.7rem 1.3rem;
+  }
+
+  .footer-nav a,
+  .footer-bottom a {
+    color: var(--color-white);
+    font-size: 0.88rem;
+  }
+
+  .footer-nav a:hover,
+  .footer-bottom a:hover {
+    color: #8fc8e7;
+  }
+
+  .footer-nav a:focus-visible,
+  .footer-bottom a:focus-visible,
+  .footer-brand:focus-visible {
+    outline: 2px solid #8fc8e7;
+    outline-offset: 4px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.8rem;
+  }
+
+  .footer-bottom a {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 640px) {
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .footer-nav {
+      justify-content: flex-start;
+      gap: 0.8rem 1rem;
+    }
+  }
+</style>

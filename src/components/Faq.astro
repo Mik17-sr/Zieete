@@ -1,0 +1,145 @@
+---
+const questions = [
+  {
+    question: '¿Qué procesos de transporte se pueden gestionar con ZIEETE?',
+    answer: 'La plataforma contempla operaciones, flota y mantenimiento, seguridad vial y HSEQ, talento humano y E-learning, proveedores e indicadores.',
+  },
+  {
+    question: '¿Qué ocurre con la información de un servicio?',
+    answer: 'Se puede gestionar desde la programación y asignación hasta el seguimiento, las novedades, las evidencias y el cierre del servicio.',
+  },
+  {
+    question: '¿ZIEETE permite controlar documentos y vencimientos?',
+    answer: 'Sí. Incluye control documental y seguimiento de vigencias para vehículos, conductores, trabajadores y proveedores, junto con alertas asociadas.',
+  },
+  {
+    question: '¿Se pueden adaptar las inspecciones a cada tipo de vehículo?',
+    answer: 'Las inspecciones preoperacionales dinámicas permiten diseñar formularios según el tipo y las características del vehículo.',
+  },
+  {
+    question: '¿Qué incluye la gestión de formación?',
+    answer: 'Incluye cursos, exámenes, evaluaciones, programación de capacitaciones, seguimiento de participación y resultados de formación.',
+  },
+];
+---
+
+<section class="faq" id="preguntas-frecuentes" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="faq-layout">
+      <header class="faq-header">
+        <div class="eyebrow">Preguntas frecuentes</div>
+        <h2 id="faq-title">Lo esencial sobre ZIEETE.</h2>
+      </header>
+
+      <div class="faq-list">
+        {questions.map((item) => (
+          <details class="faq-item" name="zieete-faq">
+            <summary>
+              <span>{item.question}</span>
+              <span class="faq-toggle" aria-hidden="true"></span>
+            </summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+    background: var(--color-white);
+  }
+
+  .faq-layout {
+    display: grid;
+    grid-template-columns: minmax(13rem, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .faq-header h2 {
+    max-width: 12ch;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    color: var(--color-accent-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    min-height: 4.25rem;
+    padding-block: 0.85rem;
+    color: var(--color-ink);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .faq-toggle {
+    flex: 0 0 1.7rem;
+    width: 1.7rem;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-primary-dark);
+  }
+
+  .faq-toggle::before {
+    content: "+";
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  .faq-item[open] .faq-toggle::before {
+    content: "-";
+  }
+
+  .faq-item p {
+    max-width: 65ch;
+    margin: 0;
+    padding: 0 3rem 1.15rem 0;
+    font-size: 0.94rem;
+  }
+
+  @media (max-width: 720px) {
+    .faq-layout {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .faq-header h2 {
+      max-width: 18ch;
+      font-size: 2rem;
+      line-height: 1.12;
+    }
+  }
+</style>

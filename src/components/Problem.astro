@@ -38,12 +38,10 @@ const problems = [
 <section class="problem" id="problema">
   <div class="container">
     <div class="problem-header">
-      <h2>La operación dispersa es más difícil de controlar</h2>
+      <h2>Cuando la operación está dispersa, cada decisión tarda más.</h2>
       <p>
-        Muchas empresas de transporte gestionan su día a día repartido entre Excel,
-        WhatsApp, documentos físicos y aplicaciones que no se comunican entre sí.
-        Cada proceso queda aislado, lo que dificulta el control, el seguimiento de
-        vencimientos y la obtención de evidencias confiables.
+        Cuando cada equipo registra la operación por separado, coordinar un servicio
+        y reconstruir lo ocurrido exige más tiempo.
       </p>
     </div>
 
@@ -80,10 +78,6 @@ const problems = [
       </div>
     </div>
 
-    <p class="problem-statement">
-      Cuando la información está dispersa, controlar la operación se vuelve más complejo.
-    </p>
-
     <div class="problem-transition" aria-hidden="true">
       <svg viewBox="0 0 24 40" width="24" height="40">
         <line x1="12" y1="0" x2="12" y2="30" />
@@ -103,12 +97,17 @@ const problems = [
   }
 
   .problem-header {
-    max-width: 60ch;
+    max-width: 62ch;
     margin-bottom: var(--space-lg);
+  }
+
+  .problem-header h2 {
+    max-width: 14ch;
   }
 
   .problem-header p {
     font-size: var(--fs-md);
+    max-width: 62ch;
   }
 
   /* ---------- Escena ---------- */
@@ -354,17 +353,6 @@ const problems = [
     display: none;
   }
 
-  /* ---------- Cierre ---------- */
-  .problem-statement {
-    max-width: 42ch;
-    margin: var(--space-lg) auto 0;
-    text-align: center;
-    font-family: var(--font-heading);
-    font-size: var(--fs-lg);
-    font-weight: 600;
-    color: var(--color-ink);
-  }
-
   .problem-transition {
     display: flex;
     justify-content: center;
@@ -405,9 +393,6 @@ const problems = [
   }
 
   @media (max-width: 560px) {
-    .problem-statement {
-      font-size: var(--fs-md);
-    }
   }
 </style>
 

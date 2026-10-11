@@ -1,0 +1,361 @@
+---
+const features = [
+  {
+    title: 'Operación conectada',
+    text: 'Un flujo acompaña el servicio desde la planificación hasta el cierre.',
+  },
+  {
+    title: 'Flota y mantenimiento',
+    text: 'Documentos, vencimientos, órdenes de servicio e inspecciones para anticipar paradas y riesgos.',
+  },
+  {
+    title: 'Seguridad y HSEQ',
+    text: 'Alertas, indicadores y trazabilidad para gestionar cumplimiento, seguridad vial y riesgos.',
+  },
+  {
+    title: 'Talento y desempeño',
+    text: 'Personal, formación, competencias y desempeño en el contexto de la operación.',
+  },
+  {
+    title: 'E-learning y competencias',
+    text: 'Cursos y evaluaciones con seguimiento de competencias.',
+  },
+  {
+    title: 'Indicadores en tiempo real',
+    text: 'Dashboards y reportes para detectar variaciones y decidir con datos de operación.',
+  },
+];
+---
+
+<section class="features" id="funcionalidades" aria-labelledby="features-title">
+  <div class="container">
+    <div class="features-header">
+      <div class="features-heading">
+        <div class="eyebrow">Funcionalidades</div>
+        <h2 id="features-title">Del servicio programado al cierre.</h2>
+      </div>
+      <p>
+        El trabajo del transporte continúa más allá de la asignación del servicio.
+      </p>
+    </div>
+
+    <div class="feature-lead">
+      <div class="feature-lead-copy">
+        <span class="feature-index">01 / FLUJO DEL SERVICIO</span>
+        <h3>{features[0].title}</h3>
+        <p>{features[0].text}</p>
+      </div>
+      <ol class="service-flow" aria-label="Etapas de gestión del servicio">
+        <li>Programación</li>
+        <li>Asignación</li>
+        <li>Seguimiento</li>
+        <li>Cierre</li>
+      </ol>
+    </div>
+
+    <div class="feature-explorer" data-feature-explorer>
+      <nav class="capability-nav" aria-label="Áreas funcionales">
+        {features.slice(1).map((feature, index) => (
+          <button
+            type="button"
+            class="capability-option"
+            id={`capability-tab-${index}`}
+            aria-controls={`capability-panel-${index}`}
+            aria-expanded={index === 0 ? 'true' : 'false'}
+          >
+            <span class="feature-index">{String(index + 2).padStart(2, '0')}</span>
+            <span>{feature.title}</span>
+          </button>
+        ))}
+      </nav>
+
+      <div class="capability-display">
+        {features.slice(1).map((feature, index) => (
+          <article
+            class="capability-panel"
+            id={`capability-panel-${index}`}
+            role="region"
+            aria-labelledby={`capability-tab-${index}`}
+            hidden={index !== 0}
+          >
+            <span class="feature-index">ÁREA {String(index + 2).padStart(2, '0')}</span>
+            <h3>{feature.title}</h3>
+            <p>{feature.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-feature-explorer]').forEach((explorer) => {
+    const options = Array.from(explorer.querySelectorAll('.capability-option'));
+    const panels = Array.from(explorer.querySelectorAll('[role="region"]'));
+
+    const activateOption = (activeIndex: number) => {
+      options.forEach((option, index) => {
+        const isActive = index === activeIndex;
+        option.setAttribute('aria-expanded', String(isActive));
+        panels[index].hidden = !isActive;
+      });
+    };
+
+    options.forEach((option, index) => {
+      option.addEventListener('click', () => activateOption(index));
+    });
+  });
+</script>
+
+<style>
+  .features {
+    padding-block: clamp(2.75rem, 4vw, 4rem);
+    background: var(--color-bg-alt);
+  }
+
+  .features-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+    align-items: end;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-primary) 9%, var(--color-white));
+    color: var(--color-primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .features-header h2 {
+    max-width: 14ch;
+    margin-bottom: 0;
+  }
+
+  .features-header p {
+    max-width: 48ch;
+    margin: 0 0 0.2rem;
+    font-size: var(--fs-md);
+  }
+
+  .feature-lead {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-block: 1.4rem 1.7rem;
+    border-top: 2px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .feature-index {
+    display: block;
+    margin-bottom: 0.65rem;
+    color: var(--color-primary-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .feature-lead h3 {
+    margin-bottom: 0.4rem;
+    font-size: 1.4rem;
+  }
+
+  .feature-lead-copy p {
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .service-flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: flow;
+  }
+
+  .service-flow li {
+    position: relative;
+    min-height: 4.5rem;
+    padding: 2.1rem 0.5rem 0 0;
+    border-top: 1px solid var(--color-gray-400);
+    color: var(--color-ink);
+    font-size: 0.86rem;
+    font-weight: 600;
+    counter-increment: flow;
+  }
+
+  .service-flow li::before {
+    content: "0" counter(flow);
+    position: absolute;
+    top: 0.55rem;
+    left: 0;
+    color: var(--color-primary);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .service-flow li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: 0.4rem;
+    width: 5px;
+    height: 5px;
+    border-top: 1px solid var(--color-primary);
+    border-right: 1px solid var(--color-primary);
+    transform: rotate(45deg);
+  }
+
+  .feature-explorer {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-top: 1.2rem;
+  }
+
+  .capability-nav {
+    display: grid;
+    align-content: start;
+  }
+
+  .capability-option {
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0.85rem 0.5rem 0.85rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--color-border);
+    border-left: 2px solid transparent;
+    background: transparent;
+    color: var(--color-text-muted);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+
+  .capability-option .feature-index {
+    margin: 0;
+    padding-left: 0.35rem;
+    color: var(--color-gray-600);
+  }
+
+  .capability-option[aria-expanded='true'] {
+    border-left-color: var(--color-accent);
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .capability-option[aria-expanded='true'] .feature-index {
+    color: var(--color-accent-dark);
+  }
+
+  .capability-option:focus-visible,
+  .capability-panel:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .capability-display {
+    display: grid;
+    align-content: center;
+    min-height: 13rem;
+    padding: 1rem 0 1rem clamp(1.25rem, 3vw, 2.5rem);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .capability-panel[hidden] {
+    display: none;
+  }
+
+  .capability-panel h3 {
+    max-width: 18ch;
+    margin-bottom: 0.7rem;
+    font-size: 1.5rem;
+  }
+
+  .capability-panel p {
+    max-width: 48ch;
+    margin: 0;
+    font-size: var(--fs-md);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .capability-panel:not([hidden]) {
+      animation: capability-enter 0.22s ease-out both;
+    }
+  }
+
+  @keyframes capability-enter {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .features-header {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .feature-lead,
+    .feature-explorer {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .capability-display {
+      min-height: 0;
+      padding: 1.25rem 0 0;
+      border-top: 1px solid var(--color-border);
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .features-header {
+      grid-template-columns: 1fr;
+    }
+
+    .features-header {
+      gap: 0.8rem;
+    }
+
+    .features-header h2 {
+      font-size: 2rem;
+      line-height: 1.12;
+    }
+
+    .service-flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 0.9rem;
+    }
+
+    .service-flow li:nth-child(2)::after {
+      content: none;
+    }
+
+    .capability-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 1rem;
+    }
+
+    .capability-option {
+      grid-template-columns: 1.7rem minmax(0, 1fr);
+      padding-block: 0.7rem;
+      font-size: 0.88rem;
+    }
+  }
+</style>

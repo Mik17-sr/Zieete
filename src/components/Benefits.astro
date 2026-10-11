@@ -1,0 +1,299 @@
+---
+const benefits = [
+  {
+    tag: 'Operación',
+    title: 'Menos reprocesos en cada servicio',
+    situation: 'La misma programación se copia entre hojas, chats y carpetas.',
+    result: 'Un flujo compartido reduce duplicidad y riesgo de error antes de salir a ruta.',
+  },
+  {
+    tag: 'Trazabilidad',
+    title: 'Novedades con contexto',
+    situation: 'Evidencias y decisiones quedan repartidas en distintos canales.',
+    result: 'Cada acción queda asociada al servicio para revisar y dar seguimiento.',
+  },
+  {
+    tag: 'Cumplimiento',
+    title: 'Vencimientos visibles antes de ruta',
+    situation: 'SOAT, revisión, licencias y certificados pueden pasar inadvertidos.',
+    result: 'El control documental ayuda a actuar antes de que falte un soporte.',
+  },
+  {
+    tag: 'Decisión',
+    title: 'Decisiones con datos de operación',
+    situation: 'Con información dispersa, cuesta comparar rendimiento y detectar cambios.',
+    result: 'Indicadores y trazabilidad ayudan a reaccionar y corregir a tiempo.',
+  },
+];
+---
+
+<section class="benefits" id="beneficios" aria-labelledby="benefits-title">
+  <div class="container">
+    <div class="benefits-header">
+      <div class="benefits-heading">
+        <div class="eyebrow">Control operativo</div>
+        <h2 id="benefits-title">Más control en cuatro puntos críticos.</h2>
+      </div>
+    </div>
+
+    <div class="benefit-columns" aria-hidden="true">
+      <span>Situación actual</span>
+      <span>Con ZIEETE</span>
+    </div>
+
+    <div class="benefit-list">
+      {benefits.map((benefit, index) => (
+        <details class="benefit-item" name="benefit-comparison" open={index === 0}>
+          <summary class="benefit-summary">
+            <span class="benefit-index">{String(index + 1).padStart(2, '0')}</span>
+            <span class="benefit-topic">
+              <span class="benefit-tag">{benefit.tag}</span>
+              <span class="benefit-title">{benefit.title}</span>
+            </span>
+            <span class="benefit-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="benefit-comparison">
+            <p class="benefit-situation">{benefit.situation}</p>
+            <p class="benefit-result">{benefit.result}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .benefits {
+    padding-block: clamp(2.75rem, 4vw, 4rem);
+    background: var(--color-white);
+  }
+
+  .benefits-header {
+    max-width: 58ch;
+    margin-bottom: 2.2rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-accent) 10%, var(--color-white));
+    color: var(--color-accent-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .benefits-header h2 {
+    max-width: 15ch;
+    margin-bottom: 0;
+  }
+
+  .benefit-columns,
+  .benefit-summary,
+  .benefit-comparison {
+    display: grid;
+    grid-template-columns: 2rem minmax(15rem, 1.05fr) minmax(0, 1fr) minmax(0, 1.1fr) 1.5rem;
+    column-gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .benefit-columns {
+    padding: 0 0 0.7rem;
+    border-bottom: 2px solid var(--color-ink);
+    color: var(--color-gray-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .benefit-columns span:first-child {
+    grid-column: 3;
+  }
+
+  .benefit-columns span:last-child {
+    grid-column: 4;
+  }
+
+  .benefit-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .benefit-summary {
+    align-items: center;
+    min-height: 4.6rem;
+    padding-block: 0.8rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .benefit-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .benefit-summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .benefit-index {
+    grid-column: 1;
+  }
+
+  .benefit-topic {
+    grid-column: 2;
+    display: grid;
+    align-content: start;
+  }
+
+  .benefit-index {
+    padding-top: 0.1rem;
+    color: var(--color-primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .benefit-tag {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: var(--color-accent-dark);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .benefit-title {
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .benefit-toggle {
+    grid-column: 5;
+    justify-self: end;
+    color: var(--color-primary-dark);
+  }
+
+  .benefit-toggle::before {
+    content: "+";
+    display: grid;
+    place-items: center;
+    width: 1.7rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .benefit-item[open] .benefit-toggle::before {
+    content: "-";
+    background: var(--color-bg-alt);
+  }
+
+  .benefit-comparison {
+    padding: 0 0 1.2rem;
+    animation: benefit-reveal 0.2s ease-out both;
+  }
+
+  .benefit-situation {
+    grid-column: 3;
+  }
+
+  .benefit-result {
+    grid-column: 4;
+  }
+
+  .benefit-situation {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+
+  .benefit-result {
+    margin: 0;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--color-accent);
+    font-size: 0.9rem;
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  @keyframes benefit-reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .benefit-columns,
+    .benefit-summary,
+    .benefit-comparison {
+      grid-template-columns: 2rem minmax(12rem, 1fr) minmax(0, 1fr) minmax(0, 1fr) 1.5rem;
+      column-gap: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .benefits-header h2 {
+      font-size: 2rem;
+      line-height: 1.12;
+    }
+
+    .benefit-columns {
+      display: none;
+    }
+
+    .benefit-summary,
+    .benefit-comparison {
+      grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
+      column-gap: 0.75rem;
+    }
+
+    .benefit-topic {
+      grid-column: 2;
+    }
+
+    .benefit-situation,
+    .benefit-result {
+      grid-column: 2;
+    }
+
+    .benefit-situation::before,
+    .benefit-result::before {
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .benefit-situation::before {
+      content: "Situación actual";
+    }
+
+    .benefit-result::before {
+      content: "Con ZIEETE";
+      color: var(--color-accent-dark);
+    }
+
+    .benefit-comparison {
+      row-gap: 0.7rem;
+      padding-bottom: 1rem;
+    }
+
+    .benefit-toggle {
+      grid-column: 3;
+    }
+
+    .benefit-columns {
+      display: none;
+    }
+  }
+</style>

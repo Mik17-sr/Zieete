@@ -38,18 +38,12 @@ const tiles = [
   },
 ];
 
-const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
 ---
 
 <section class="solution" id="solucion">
   <div class="container">
     <div class="sol-header">
-      <h2>Todo lo disperso, conectado en una sola plataforma</h2>
-      <p>
-        ZIEETE reúne la operación, la flota, el mantenimiento, la seguridad vial,
-        el talento humano y los proveedores. Lo que hoy vive en una hoja, un chat
-        o una carpeta tiene su lugar en un mismo sistema.
-      </p>
+      <h2>Cada fricción, una respuesta operativa.</h2>
     </div>
 
     <div class="sol-grid" id="sol-grid">
@@ -64,16 +58,6 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
         </article>
       ))}
 
-      <div class="sol-banner" style="--i:6;">
-        <p class="sol-verbs" aria-label="Gestiona. Controla. Capacita. Evalúa. Decide.">
-          {verbs.map((v, i) => (
-            <span style={`--v:${i};`}>{v}.</span>
-          ))}
-        </p>
-        <div class="sol-cta">
-          <a href="#contacto" class="btn btn-primary">Solicitar demo</a>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -91,6 +75,10 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
   .sol-header {
     max-width: 62ch;
     margin-bottom: var(--space-lg);
+  }
+
+  .sol-header h2 {
+    max-width: 16ch;
   }
 
   .sol-header p {
@@ -127,18 +115,18 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
     inset: 0;
     pointer-events: none;
     background: radial-gradient(
-      280px circle at var(--mx) var(--my),
-      color-mix(in srgb, var(--sl-accent) 14%, transparent),
-      transparent 70%
+      220px circle at var(--mx) var(--my),
+      color-mix(in srgb, var(--sl-accent) 10%, transparent),
+      transparent 68%
     );
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
   }
 
   .sol-tile:hover {
-    transform: translateY(-5px);
-    border-color: color-mix(in srgb, var(--sl-accent) 55%, var(--sl-line));
-    box-shadow: 0 22px 40px -22px color-mix(in srgb, var(--sl-accent) 45%, transparent);
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--sl-accent) 45%, var(--sl-line));
+    box-shadow: 0 12px 26px -18px color-mix(in srgb, var(--sl-accent) 50%, transparent);
   }
 
   .sol-tile:hover::before { opacity: 1; }
@@ -216,63 +204,13 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
     color: var(--sl-muted);
   }
 
-  /* ---------- Cierre: los cinco verbos ---------- */
-  .sol-banner {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.2rem 2rem;
-    padding: 1.6rem 1.8rem;
-    border-radius: var(--radius-md);
-    border: 1px solid color-mix(in srgb, var(--sl-accent) 25%, var(--sl-line));
-    background: linear-gradient(
-      110deg,
-      color-mix(in srgb, var(--sl-accent) 9%, var(--color-white)),
-      var(--color-bg-alt)
-    );
-    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .sol-verbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1.1rem;
-    margin: 0;
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.25rem, 2.6vw, 1.9rem);
-    color: var(--sl-ink);
-  }
-
-  .sol-verbs span {
-    display: inline-block;
-  }
-
-  /* Cada verbo se ilumina una sola vez, en secuencia, y queda fijo */
-  @media (prefers-reduced-motion: no-preference) {
-    .solution.is-in .sol-verbs span {
-      animation: sol-verb 0.9s ease-out both;
-      animation-delay: calc(var(--v) * 0.6s);
-    }
-  }
-
-  @keyframes sol-verb {
-    0%   { color: color-mix(in srgb, var(--sl-ink) 45%, var(--color-white)); transform: translateY(0); }
-    40%  { color: var(--sl-accent); transform: translateY(-4px); }
-    100% { color: var(--sl-ink); transform: translateY(0); }
-  }
-
   /* ---------- Entrada al hacer scroll ---------- */
-  .solution.has-js:not(.is-in) .sol-tile,
-  .solution.has-js:not(.is-in) .sol-banner {
+  .solution.has-js:not(.is-in) .sol-tile {
     opacity: 0;
     transform: translateY(26px) scale(0.97);
   }
 
-  .solution.is-in .sol-tile,
-  .solution.is-in .sol-banner {
+  .solution.is-in .sol-tile {
     transition-delay: calc(var(--i) * 90ms), 0s, 0s, calc(var(--i) * 90ms);
   }
 
@@ -282,8 +220,7 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
   }
 
   /* Terminada la entrada, el hover responde sin retraso */
-  .solution.is-settled .sol-tile,
-  .solution.is-settled .sol-banner {
+  .solution.is-settled .sol-tile {
     transition-delay: 0s;
   }
 
@@ -294,7 +231,6 @@ const verbs = ['Gestiona', 'Controla', 'Capacita', 'Evalúa', 'Decide'];
   @media (max-width: 600px) {
     .sol-grid { grid-template-columns: minmax(0, 1fr); }
     .sol-tile { grid-column: auto; }
-    .sol-banner { padding: 1.3rem 1.2rem; }
   }
 </style>
 

@@ -21,13 +21,7 @@ const shotOf = (area: string, item: string): string | null => {
 <section class="process" id="soluciones" aria-labelledby="process-title">
   <div class="container">
     <div class="process-header">
-      <h2 id="process-title">Soluciones por proceso</h2>
-      <p>
-        ZIEETE integra operación, flota, mantenimiento, conductores, inspecciones
-        dinámicas, seguridad vial, E-learning, proveedores, HSEQ, indicadores y
-        trazabilidad dentro de un mismo ecosistema digital. Selecciona un proceso
-        para ver qué gestiona.
-      </p>
+      <h2 id="process-title">Tareas reales detrás de cada proceso.</h2>
     </div>
 
     <div class="rail" id="rail" role="tablist" aria-label="Procesos de ZIEETE" style="--p:0">
@@ -147,6 +141,8 @@ const shotOf = (area: string, item: string): string | null => {
                   </button>
                 ))}
               </p>
+
+              <a href="#contacto" class="panel-cta btn btn-secondary">Conocer ZIEETE</a>
             </div>
           </div>
         </div>
@@ -172,6 +168,10 @@ const shotOf = (area: string, item: string): string | null => {
   .process-header {
     max-width: 66ch;
     margin-bottom: var(--space-xl);
+  }
+
+  .process-header h2 {
+    max-width: 14ch;
   }
 
   .process-header p {
@@ -287,9 +287,10 @@ const shotOf = (area: string, item: string): string | null => {
   /* Paneles */
   .panel {
     padding: var(--space-lg);
-    background: var(--color-bg-alt);
+    background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(247,248,250,0.9));
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
   }
 
   .panel[hidden] {
@@ -408,6 +409,7 @@ const shotOf = (area: string, item: string): string | null => {
   .item-btn.is-active {
     background: var(--color-white);
     border-color: var(--color-accent);
+    box-shadow: 0 10px 20px -16px rgba(0, 102, 255, 0.8);
     font-weight: 600;
   }
 
@@ -541,8 +543,8 @@ const shotOf = (area: string, item: string): string | null => {
   .panel-outcome {
     margin: 0 0 var(--space-sm);
     padding: 0.9rem 1.1rem;
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--zt-blue-soft) 55%, var(--color-white));
+    border: 1px solid color-mix(in srgb, var(--zt-blue) 20%, var(--color-border));
     border-radius: var(--radius-sm);
     font-size: var(--fs-xs);
     color: var(--color-ink);
@@ -552,7 +554,15 @@ const shotOf = (area: string, item: string): string | null => {
     display: block;
     margin-bottom: 0.15rem;
     font-family: var(--font-heading);
-    color: var(--color-accent-dark);
+    color: var(--color-primary-dark);
+  }
+
+  .panel-cta {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: var(--space-sm);
+    padding-block: 0.8rem;
   }
 
   .panel-conn {
@@ -647,6 +657,10 @@ const shotOf = (area: string, item: string): string | null => {
   @media (max-width: 860px) {
     .panel {
       padding: var(--space-md);
+    }
+
+    .process-header h2 {
+      max-width: none;
     }
 
     /* La ilustración va primero y queda fija mientras se recorre la lista,

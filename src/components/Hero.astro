@@ -6,10 +6,8 @@
       </h1>
 
       <p class="hero-subtitle">
-        ZIEETE reúne la operación, la flota, el mantenimiento, la seguridad
-        vial, el talento humano y los proveedores de tu empresa de transporte en
-        una sola plataforma, en lugar de mantenerlos en Excel, WhatsApp y
-        aplicaciones separadas.
+        Una plataforma de gestión para empresas de transporte que necesitan
+        coordinar el trabajo diario y responder con información clara.
       </p>
 
       <p class="hero-tagline">
@@ -18,7 +16,7 @@
 
       <div class="hero-ctas">
         <a href="#contacto" class="btn btn-primary">Solicitar demo</a>
-        <a href="#solucion" class="btn btn-secondary">Conocer ZIEETE</a>
+        <a href="#contacto" class="btn btn-secondary">Conocer ZIEETE</a>
       </div>
     </div>
 
@@ -796,6 +794,7 @@
     --zt-ink: #1d3f72;
     --zt-muted: #5b6b84;
     --zt-line: #dbe6f5;
+    padding-block: var(--space-xl) 0;
   }
 
   .hero-title span {
@@ -805,8 +804,30 @@
   .hero .hero-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    gap: 4rem;
+    gap: 2.5rem;
     align-items: center;
+  }
+
+  .hero-content {
+    max-width: 34rem;
+  }
+
+  .hero-title {
+    letter-spacing: -0.05em;
+  }
+
+  .hero-subtitle {
+    max-width: 33rem;
+    font-size: 1.12rem;
+    color: var(--zt-muted, #5b6b84);
+  }
+
+  .hero-tagline {
+    margin-top: 1rem;
+    font-size: 0.92rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-primary-dark, #244A85);
   }
 
   .hero-visual {
@@ -1126,59 +1147,34 @@
     gap: 1rem;
     align-items: center;
     flex-wrap: wrap;
+    margin-top: 1.5rem;
   }
 
   .hero-ctas .btn {
     position: relative;
-    overflow: hidden;
-    z-index: 1;
     border-radius: 8px;
     font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    transition:
-      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.3s ease,
-      background-color 0.3s ease,
-      border-color 0.3s ease;
+    padding: 0.8rem 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .hero-ctas .btn:hover {
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-2px);
   }
 
   .hero-ctas .btn-primary {
     background-color: var(--zt-blue, #0066ff);
     color: #ffffff;
     border: 2px solid transparent;
-    box-shadow: 0 4px 12px
-      color-mix(in srgb, var(--zt-blue, #0066ff) 40%, transparent);
+    box-shadow: 0 12px 28px -18px rgba(0, 102, 255, 0.8);
   }
 
   .hero-ctas .btn-primary::after {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 50%;
-    height: 200%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent
-    );
-    transform: rotate(25deg);
-    transition: none;
-  }
-
-  .hero-ctas .btn-primary:hover::after {
-    left: 150%;
-    transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none;
   }
 
   .hero-ctas .btn-primary:hover {
-    box-shadow: 0 10px 25px -5px
-      color-mix(in srgb, var(--zt-blue, #0066ff) 70%, transparent);
+    box-shadow: 0 14px 30px -18px rgba(0, 102, 255, 0.9);
   }
 
   .hero-ctas .btn-secondary {
@@ -1191,8 +1187,6 @@
     background-color: var(--zt-blue-soft, #eaf2ff);
     border-color: var(--zt-blue, #0066ff);
     color: var(--zt-blue, #0066ff);
-    box-shadow: 0 8px 20px -8px
-      color-mix(in srgb, var(--zt-blue, #0066ff) 25%, transparent);
   }
 
   .interactive-network-wrapper {
